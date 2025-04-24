@@ -1,10 +1,13 @@
 import { MastraClient } from "@mastra/client-js";
-import { Flashcard } from "../types";
+import { Flashcard } from "./types";
+
+// Get the Mastra server URL from environment variables or use default
+const MASTRA_SERVER_URL = import.meta.env.VITE_MASTRA_SERVER_URL || "http://localhost:4111";
 
 // Initialize the Mastra client
 export const mastraClient = new MastraClient({
   // Using our local Mastra server that's running
-  baseUrl: "http://localhost:4111",
+  baseUrl: MASTRA_SERVER_URL,
 
   // Optional configurations
   retries: 3,
@@ -28,10 +31,10 @@ interface MastraResponse {
 }
 
 // Helper function to generate flashcards
-export const generateFlashcards = async ({ 
-  topic, 
-  difficulty, 
-  cardCount 
+export const generateFlashcards = async ({
+  topic,
+  difficulty,
+  cardCount
 }: FlashcardGenerationParams): Promise<Flashcard[]> => {
   try {
     console.log(
