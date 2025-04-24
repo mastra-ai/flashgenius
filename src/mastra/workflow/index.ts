@@ -17,8 +17,9 @@ const generateFlashcardsStep = new Step({
   outputSchema: z.object({
     flashcards: flashcardsArraySchema,
   }),
-  execute: async ({ context, mastra }) => {
-    const { topic, difficulty, count } = context.getStepResult('trigger');
+  execute: async (context: any) => {
+    const mastra = context.mastra;
+    const { topic, difficulty, count } = context.trigger;
     
     // Get the flashcard agent
     const agent = mastra.getAgent('flashcardAgent');

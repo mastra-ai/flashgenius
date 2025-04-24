@@ -46,3 +46,12 @@
 .btn:active {
   transform: translateY(1px);
 }
+
+/* Progress bar */
+.progress-bar {
+  width: var(--progress-width);
+}
+
+.progress-bar[data-progress] {
+  --progress-width: attr(data-progress)%;
+}

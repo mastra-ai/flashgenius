@@ -3,15 +3,26 @@ import TopicSelector from '../components/TopicSelector';
 import FlashcardList from '../components/FlashcardList';
 // Import the generateFlashcards function from our Mastra client
 import { generateFlashcards } from '../mastra/client';
+import { Flashcard } from '../types';
 
-const Create = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [flashcards, setFlashcards] = useState([]);
-  const [currentTopic, setCurrentTopic] = useState('');
-  const [error, setError] = useState(null);
+interface TopicSubmitParams {
+  topic: string;
+  difficulty: string;
+  cardCount: number;
+}
+
+interface EnhancedFlashcard extends Flashcard {
+  id: string;
+}
+
+const Create: React.FC = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [flashcards, setFlashcards] = useState<EnhancedFlashcard[]>([]);
+  const [currentTopic, setCurrentTopic] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
 
   // Generate flashcards using Mastra Client SDK
-  const handleTopicSubmit = async ({ topic, difficulty, cardCount }) => {
+  const handleTopicSubmit = async ({ topic, difficulty, cardCount }: TopicSubmitParams): Promise<void> => {
     setIsLoading(true);
     setCurrentTopic(topic);
     setError(null);
@@ -25,11 +36,11 @@ const Create = () => {
       });
       
       // Format the cards for our UI
-      const generatedCards = cards.map((card, index) => ({
+      const generatedCards: EnhancedFlashcard[] = cards.map((card, index) => ({
         id: `card-${index}`,
         question: card.question,
         answer: card.answer,
-        difficulty: card.difficulty || difficulty.toLowerCase()
+        difficulty: card.difficulty || difficulty.toLowerCase() as 'beginner' | 'intermediate' | 'advanced'
       }));
       
       setFlashcards(generatedCards);
@@ -39,11 +50,11 @@ const Create = () => {
         console.warn('No flashcards returned from API, using mock data');
         
         // Generate mock flashcards
-        const mockCards = Array.from({ length: cardCount }, (_, i) => ({
+        const mockCards: EnhancedFlashcard[] = Array.from({ length: cardCount }, (_, i) => ({
           id: `card-${i}`,
           question: `Sample question ${i + 1} about ${topic}?`,
           answer: `Sample answer ${i + 1} about ${topic}.`,
-          difficulty: difficulty.toLowerCase()
+          difficulty: difficulty.toLowerCase() as 'beginner' | 'intermediate' | 'advanced'
         }));
         
         setFlashcards(mockCards);
@@ -54,11 +65,11 @@ const Create = () => {
       setError('Failed to generate flashcards. Please try again.');
       
       // Fallback to mock data
-      const mockCards = Array.from({ length: cardCount }, (_, i) => ({
+      const mockCards: EnhancedFlashcard[] = Array.from({ length: cardCount }, (_, i) => ({
         id: `card-${i}`,
         question: `Sample question ${i + 1} about ${topic}?`,
         answer: `Sample answer ${i + 1} about ${topic}.`,
-        difficulty: difficulty.toLowerCase()
+        difficulty: difficulty.toLowerCase() as 'beginner' | 'intermediate' | 'advanced'
       }));
       
       setFlashcards(mockCards);

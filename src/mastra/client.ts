@@ -1,4 +1,5 @@
 import { MastraClient } from "@mastra/client-js";
+import { Flashcard } from "../types";
 
 // Initialize the Mastra client
 export const mastraClient = new MastraClient({
@@ -11,8 +12,27 @@ export const mastraClient = new MastraClient({
   maxBackoffMs: 5000,
 });
 
+interface FlashcardGenerationParams {
+  topic: string;
+  difficulty: string;
+  cardCount: number;
+}
+
+interface MastraResponse {
+  text?: string;
+  object?: {
+    flashcards?: Flashcard[];
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 // Helper function to generate flashcards
-export const generateFlashcards = async ({ topic, difficulty, cardCount }) => {
+export const generateFlashcards = async ({ 
+  topic, 
+  difficulty, 
+  cardCount 
+}: FlashcardGenerationParams): Promise<Flashcard[]> => {
   try {
     console.log(
       `Generating ${cardCount} flashcards about "${topic}" at ${difficulty} level...`
@@ -29,7 +49,7 @@ export const generateFlashcards = async ({ topic, difficulty, cardCount }) => {
           content: `Generate ${cardCount} flashcards about "${topic}" at ${difficulty} level.`,
         },
       ],
-    });
+    }) as MastraResponse;
 
     console.log("Received response from Mastra:", response);
 
@@ -60,7 +80,7 @@ export const generateFlashcards = async ({ topic, difficulty, cardCount }) => {
         console.error("JSON parse error:", jsonError);
 
         // As a fallback, try to extract content using regex
-        const cards = [];
+        const cards: Flashcard[] = [];
         const questionMatches = responseText.matchAll(
           /question["']?\s*:\s*["']([^"']+)["']/gi
         );
@@ -75,7 +95,7 @@ export const generateFlashcards = async ({ topic, difficulty, cardCount }) => {
           cards.push({
             question: questions[i],
             answer: answers[i],
-            difficulty: difficulty,
+            difficulty: difficulty as 'beginner' | 'intermediate' | 'advanced',
           });
         }
 

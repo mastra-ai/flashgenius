@@ -1,11 +1,19 @@
-import { useState } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
 
-const TopicSelector = ({ onTopicSubmit }) => {
-  const [topic, setTopic] = useState('');
-  const [difficulty, setDifficulty] = useState('medium');
-  const [cardCount, setCardCount] = useState(10);
+interface TopicSelectorProps {
+  onTopicSubmit: (data: {
+    topic: string;
+    difficulty: string;
+    cardCount: number;
+  }) => void;
+}
 
-  const handleSubmit = (e) => {
+const TopicSelector: React.FC<TopicSelectorProps> = ({ onTopicSubmit }) => {
+  const [topic, setTopic] = useState<string>('');
+  const [difficulty, setDifficulty] = useState<string>('medium');
+  const [cardCount, setCardCount] = useState<number>(10);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (topic.trim()) {
       onTopicSubmit({ topic, difficulty, cardCount });
@@ -26,7 +34,7 @@ const TopicSelector = ({ onTopicSubmit }) => {
             className="input"
             placeholder="Enter a topic (e.g., 'JavaScript Promises', 'Photosynthesis')"
             value={topic}
-            onChange={(e) => setTopic(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setTopic(e.target.value)}
             required
           />
         </div>
@@ -39,7 +47,7 @@ const TopicSelector = ({ onTopicSubmit }) => {
             id="difficulty"
             className="input"
             value={difficulty}
-            onChange={(e) => setDifficulty(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLSelectElement>) => setDifficulty(e.target.value)}
           >
             <option value="beginner">Beginner</option>
             <option value="medium">Intermediate</option>
@@ -58,7 +66,7 @@ const TopicSelector = ({ onTopicSubmit }) => {
             min="5"
             max="20"
             value={cardCount}
-            onChange={(e) => setCardCount(parseInt(e.target.value))}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setCardCount(parseInt(e.target.value))}
           />
         </div>
         

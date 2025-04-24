@@ -1,9 +1,24 @@
 import { useState } from 'react';
+import { Flashcard } from '../types';
 
-const FlashcardItem = ({ card, onNext, onPrevious, currentIndex, totalCards }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
+interface FlashcardItemProps {
+  card: Flashcard;
+  onNext: () => void;
+  onPrevious: () => void;
+  currentIndex: number;
+  totalCards: number;
+}
 
-  const handleFlip = () => {
+const FlashcardItem: React.FC<FlashcardItemProps> = ({ 
+  card, 
+  onNext, 
+  onPrevious, 
+  currentIndex, 
+  totalCards 
+}) => {
+  const [isFlipped, setIsFlipped] = useState<boolean>(false);
+
+  const handleFlip = (): void => {
     setIsFlipped(!isFlipped);
   };
 

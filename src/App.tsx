@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import Home from './pages/Home';
-import Create from './pages/Create';
+import Header from './components/Header.tsx';
+import Home from './pages/Home.tsx';
+import Create from './pages/Create.tsx';
 import './App.css';
 
-function App() {
+function App(): React.ReactElement {
   return (
     <Router>
       <div className="min-h-screen flex flex-col">

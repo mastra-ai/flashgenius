@@ -1,16 +1,22 @@
 import { useState } from 'react';
 import FlashcardItem from './FlashcardItem';
+import { Flashcard } from '../types';
 
-const FlashcardList = ({ cards, topic }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+interface FlashcardListProps {
+  cards: Flashcard[];
+  topic?: string;
+}
 
-  const handleNext = () => {
+const FlashcardList: React.FC<FlashcardListProps> = ({ cards, topic }) => {
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+
+  const handleNext = (): void => {
     if (currentIndex < cards.length - 1) {
       setCurrentIndex(currentIndex + 1);
     }
   };
 
-  const handlePrevious = () => {
+  const handlePrevious = (): void => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
     }
@@ -42,7 +48,7 @@ const FlashcardList = ({ cards, topic }) => {
       <div className="mt-8">
         <div className="w-full bg-gray-200 rounded-full h-2.5">
           <div 
-            className="bg-blue-600 h-2.5 rounded-full" 
+            className="bg-blue-600 h-2.5 rounded-full"
             style={{ width: `${((currentIndex + 1) / cards.length) * 100}%` }}
           ></div>
         </div>
