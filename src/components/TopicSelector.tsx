@@ -1,4 +1,5 @@
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, FormEvent, ChangeEvent, useMemo } from 'react';
+import { topics } from '../data/topics';
 
 interface TopicSelectorProps {
   onTopicSubmit: (data: {
@@ -12,6 +13,11 @@ const TopicSelector: React.FC<TopicSelectorProps> = ({ onTopicSubmit }) => {
   const [topic, setTopic] = useState<string>('');
   const [difficulty, setDifficulty] = useState<string>('medium');
   const [cardCount, setCardCount] = useState<number>(10);
+
+  const randomTopics = useMemo(() => {
+    const shuffled = [...topics].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 5);
+  }, []);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -37,6 +43,21 @@ const TopicSelector: React.FC<TopicSelectorProps> = ({ onTopicSubmit }) => {
             onChange={(e: ChangeEvent<HTMLInputElement>) => setTopic(e.target.value)}
             required
           />
+          <div className="mt-2">
+            <p className="text-sm text-gray-500 mb-1">Suggested Topics:</p>
+            <div className="flex flex-wrap gap-2">
+              {randomTopics.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  className="px-3 py-1 bg-gray-100 rounded-md text-sm hover:bg-gray-200"
+                  onClick={() => setTopic(t)}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
         
         <div className="mb-4">
