@@ -78,6 +78,7 @@ FlashGenius is a modern web application that uses AI to generate educational fla
 - `npm run lint` - Run ESLint
 - `npm run preview` - Preview the production build locally
 - `npm run mastra:dev` - Start the Mastra AI server
+- `npm test` - Run unit tests with Vitest
 
 ## License
 
