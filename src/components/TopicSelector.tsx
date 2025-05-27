@@ -10,7 +10,9 @@ interface TopicSelectorProps {
 
 const TopicSelector: React.FC<TopicSelectorProps> = ({ onTopicSubmit }) => {
   const [topic, setTopic] = useState<string>('');
-  const [difficulty, setDifficulty] = useState<string>('medium');
+  // Use "intermediate" to align with the rest of the application and the
+  // server's expected difficulty levels
+  const [difficulty, setDifficulty] = useState<string>('intermediate');
   const [cardCount, setCardCount] = useState<number>(10);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
@@ -50,7 +52,7 @@ const TopicSelector: React.FC<TopicSelectorProps> = ({ onTopicSubmit }) => {
             onChange={(e: ChangeEvent<HTMLSelectElement>) => setDifficulty(e.target.value)}
           >
             <option value="beginner">Beginner</option>
-            <option value="medium">Intermediate</option>
+            <option value="intermediate">Intermediate</option>
             <option value="advanced">Advanced</option>
           </select>
         </div>
